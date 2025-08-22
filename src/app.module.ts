@@ -3,9 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { Funcionario } from './funcionario/funcionario.entity';
-import { Cliente } from './cliente/cliente.entity';
-import { Remedio } from './remedio/remedio.entity';
+import { Funcionario } from './funcionario/funcionario.entity/funcionario.entity';
+import { Cliente } from './cliente/cliente.entity/cliente.entity';
+import { Remedio } from './remedio/remedio.entity/remedio.entity';
 import { FuncionarioModule } from './funcionario/funcionario.module';
 import { ClienteModule } from './cliente/cliente.module';
 import { RemedioModule } from './remedio/remedio.module';
