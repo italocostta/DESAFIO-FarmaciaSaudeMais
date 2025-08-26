@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Funcionario } from './funcionario.entity/funcionario.entity';
@@ -18,10 +18,9 @@ export class FuncionarioService {
     private readonly repo: Repository<Funcionario>,
   ) {}
 
-  create(dto: CreateFuncionarioDto) {
+  async create(dto: CreateFuncionarioDto) {
     const entity = this.repo.create({
       ...dto,
-      // se dataAdmissao for string ISO, TypeORM converte para date
       dataAdmissao: new Date(dto.dataAdmissao),
     });
     return this.repo.save(entity);
@@ -39,22 +38,29 @@ export class FuncionarioService {
     });
   }
 
-  findOne(id: number) {
-    return this.repo.findOneBy({ id });
+  async findOne(id: number): Promise<Funcionario> {
+    const funcionario = await this.repo.findOne({ where: { id } });
+    if (!funcionario) {
+      throw new NotFoundException('Funcionário não encontrado');
+    }
+    return funcionario;
   }
 
   async update(id: number, dto: UpdateFuncionarioDto) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const patch = { ...dto } as any;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (dto.dataAdmissao) patch.dataAdmissao = new Date(dto.dataAdmissao);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    await this.repo.update(id, patch);
-    return this.findOne(id);
+    const funcionario = await this.findOne(id);
+
+    if (dto.dataAdmissao) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      (funcionario as any).dataAdmissao = new Date(dto.dataAdmissao);
+    }
+    Object.assign(funcionario, dto);
+
+    return this.repo.save(funcionario);
   }
 
   async remove(id: number) {
-    await this.repo.delete(id);
+    const funcionario = await this.findOne(id);
+    await this.repo.remove(funcionario);
     return { deleted: true };
   }
 }

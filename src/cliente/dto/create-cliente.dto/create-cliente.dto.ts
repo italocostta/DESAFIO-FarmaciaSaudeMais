@@ -1,25 +1,31 @@
-import { IsOptional, IsString, Length, IsEmail } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateClienteDto {
+  @ApiProperty({ example: 'João da Silva', minLength: 2, maxLength: 120 })
   @IsString()
   @Length(2, 120)
   nome: string;
 
+  @ApiProperty({ example: '98765432100', description: 'CPF com 11 dígitos' })
   @IsString()
-  @Length(11, 11, { message: 'CPF deve ter exatamente 11 dígitos' })
+  @Length(11, 11)
   cpf: string;
 
+  @ApiPropertyOptional({ example: '83999990000', minLength: 8, maxLength: 20 })
   @IsOptional()
   @IsString()
-  @Length(8, 15, { message: 'Telefone deve ter entre 8 e 15 dígitos' })
+  @Length(8, 20)
   telefone?: string;
 
+  @ApiPropertyOptional({ example: 'joao@email.com' })
   @IsOptional()
   @IsEmail()
-  @Length(5, 120)
   email?: string;
 
+  @ApiPropertyOptional({ example: 'Rua A, 123 - Centro' })
   @IsOptional()
   @IsString()
+  @Length(2, 200)
   endereco?: string;
 }

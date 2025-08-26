@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsEmail,
@@ -9,35 +10,40 @@ import {
 } from 'class-validator';
 
 export enum Cargo {
+  GERENTE = 'GERENTE',
   FARMACEUTICO = 'FARMACEUTICO',
   ATENDENTE = 'ATENDENTE',
-  GERENTE = 'GERENTE',
 }
 
 export class CreateFuncionarioDto {
+  @ApiProperty({ example: 'Ana Gerente', minLength: 2, maxLength: 120 })
   @IsString()
   @Length(2, 120)
   nome: string;
 
+  @ApiProperty({ example: '12345678901', description: 'CPF com 11 dígitos' })
   @IsString()
-  @Length(11, 11, { message: 'CPF deve ter exatamente 11 dígitos' })
+  @Length(11, 11)
   cpf: string;
 
-  @IsEnum(Cargo, {
-    message: 'Cargo deve ser FARMACEUTICO, ATENDENTE ou GERENTE',
-  })
+  @ApiProperty({ enum: Cargo, enumName: 'Cargo' })
+  @IsEnum(Cargo)
   cargo: Cargo;
 
+  @ApiProperty({ example: 5800, minimum: 0 })
   @IsNumber()
   @Min(0)
   salario: number;
 
-  @IsDateString(
-    {},
-    { message: 'Data de admissão deve estar em formato ISO (yyyy-mm-dd)' },
-  )
+  @ApiProperty({ example: '2025-01-15', description: 'ISO date (YYYY-MM-DD)' })
+  @IsDateString()
   dataAdmissao: string;
 
+  @ApiProperty({
+    example: 'ana.gerente@saudemais.com',
+    minLength: 5,
+    maxLength: 120,
+  })
   @IsEmail()
   @Length(5, 120)
   email: string;

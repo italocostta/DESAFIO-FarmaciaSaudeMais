@@ -66,7 +66,6 @@ export class AuthService {
     return this.users.save(user);
   }
 
-  // (opcional) criar o primeiro gerente para bootstrap
   async seedAdmin() {
     const email = 'admin@saudemais.com';
     const exists = await this.users.findOne({ where: { email } });
