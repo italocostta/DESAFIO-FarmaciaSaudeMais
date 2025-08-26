@@ -15,13 +15,13 @@ import * as nestjsPaginate from 'nestjs-paginate';
 import { Funcionario } from './funcionario.entity/funcionario.entity';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('funcionarios')
-@UseGuards(RolesGuard)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class FuncionarioController {
   constructor(private readonly service: FuncionarioService) {}
 
-  // somente GERENTE cria/edita/exclui funcionários
   @Post()
   @Roles('GERENTE')
   create(@Body() dto: CreateFuncionarioDto) {

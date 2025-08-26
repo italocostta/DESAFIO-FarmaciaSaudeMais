@@ -9,6 +9,7 @@ import { Remedio } from './remedio/remedio.entity/remedio.entity';
 import { FuncionarioModule } from './funcionario/funcionario.module';
 import { ClienteModule } from './cliente/cliente.module';
 import { RemedioModule } from './remedio/remedio.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,20 +19,22 @@ import { RemedioModule } from './remedio/remedio.module';
       useFactory: (cfg: ConfigService) => ({
         type: 'postgres',
         host: cfg.get<string>('DB_HOST'),
-        port: +cfg.get<number>('DB_PORT'),
+        port: +cfg.getOrThrow<number>('DB_PORT'),
         username: cfg.get<string>('DB_USER'),
         password: cfg.get<string>('DB_PASS'),
         database: cfg.get<string>('DB_NAME'),
         entities: [Funcionario, Cliente, Remedio],
+        autoLoadEntities: true,
         synchronize: true, // deixe true só em DEV
       }),
     }),
+    AuthModule,
     FuncionarioModule,
     ClienteModule,
     RemedioModule,
   ],
 })
-export class AppModule {
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
   }

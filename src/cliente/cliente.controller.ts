@@ -15,13 +15,13 @@ import * as nestjsPaginate from 'nestjs-paginate';
 import { Cliente } from './cliente.entity/cliente.entity';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('clientes')
-@UseGuards(RolesGuard)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class ClienteController {
   constructor(private readonly service: ClienteService) {}
 
-  // cadastro de clientes pode ser feito por atendente/gerente
   @Post()
   @Roles('ATENDENTE', 'GERENTE')
   create(@Body() dto: CreateClienteDto) {

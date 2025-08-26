@@ -15,14 +15,15 @@ import * as nestjsPaginate from 'nestjs-paginate';
 import { Remedio } from './remedio.entity/remedio.entity';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('remedios')
-@UseGuards(RolesGuard)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class RemedioController {
   constructor(private readonly service: RemedioService) {}
 
   @Post()
-  @Roles('FARMACEUTICO', 'GERENTE') // apenas esses criam
+  @Roles('FARMACEUTICO')
   create(@Body() dto: CreateRemedioDto) {
     return this.service.create(dto);
   }
@@ -40,13 +41,13 @@ export class RemedioController {
   }
 
   @Patch(':id')
-  @Roles('FARMACEUTICO', 'GERENTE') // apenas esses editam
+  @Roles('FARMACEUTICO', 'GERENTE')
   update(@Param('id') id: string, @Body() dto: UpdateRemedioDto) {
     return this.service.update(+id, dto);
   }
 
   @Delete(':id')
-  @Roles('GERENTE') // só gerente deleta
+  @Roles('GERENTE')
   remove(@Param('id') id: string) {
     return this.service.remove(+id);
   }
