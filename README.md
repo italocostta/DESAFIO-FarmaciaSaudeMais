@@ -1,98 +1,208 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 💊 Farmácia SaudeMais - Sistema CRUD
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Projeto desenvolvido com **NestJS**, **TypeORM** e **PostgreSQL** para gerenciar uma farmácia fictícia.  
+O sistema implementa autenticação JWT, controle de acesso por papéis (**Gerente**, **Farmacêutico**, **Atendente**) e documentação via **Swagger**.  
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 Tecnologias Utilizadas
+- **Node.js** (back-end)
+- **NestJS** (framework principal)
+- **TypeORM** (ORM para banco de dados relacional)
+- **PostgreSQL** (banco de dados)
+- **Class-Validator** (validações nos DTOs)
+- **nestjs-paginate** (paginação nas listagens)
+- **JWT (JSON Web Token)** (autenticação)
+- **Guards e Decorators** (controle de papéis/roles)
+- **Swagger** (documentação interativa)
+- **Middleware** (logs de requisições)
+- **Exception Filters** (tratamento global de erros)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
-
-```bash
-$ npm install
+## 📂 Estrutura de Pastas
+```
+src/
+├── auth/                # Módulo de autenticação (JWT + Users)
+│   ├── dto/             # DTOs de login e criação de usuário
+│   ├── auth.controller.ts
+│   └── auth.service.ts
+│
+├── cliente/             # Módulo Cliente (CRUD)
+│   ├── dto/             # DTOs de criação/atualização
+│   ├── cliente.entity.ts
+│   └── cliente.service.ts
+│
+├── funcionario/         # Módulo Funcionário (CRUD + roles)
+│   ├── dto/
+│   ├── funcionario.entity.ts
+│   └── funcionario.service.ts
+│
+├── remedio/             # Módulo Remédio (CRUD)
+│   ├── dto/
+│   ├── remedio.entity.ts
+│   └── remedio.service.ts
+│
+├── common/              # Código compartilhado
+│   ├── decorators/      # @Roles()
+│   ├── guards/          # RolesGuard
+│   └── filters/         # Exception filter global
+│
+├── app.module.ts        # Configuração principal
+└── main.ts              # Bootstrap da aplicação
 ```
 
-## Compile and run the project
+---
 
+## 🛠️ Configuração do Ambiente
+
+### 1. Clone o repositório
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/seu-usuario/farmacia-saudemais.git
+cd farmacia-saudemais
 ```
 
-## Run tests
-
+### 2. Instale as dependências
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+### 3. Configure as variáveis de ambiente
+Crie um arquivo `.env` na raiz com:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+# Banco de Dados
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=saudemais
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+# JWT
+JWT_SECRET=supersecreto
+JWT_EXPIRES_IN=1h
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Porta da aplicação
+PORT=3000
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. Crie o banco no PostgreSQL
+```sql
+CREATE DATABASE saudemais;
+```
 
-## Resources
+### 5. Execute a aplicação
+```bash
+npm run start:dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 📖 Documentação com Swagger
 
-## Support
+Acesse:
+```
+http://localhost:3000/docs
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Todos os endpoints estarão documentados, incluindo payloads de exemplo, roles exigidas e códigos de resposta.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🔐 Fluxo de Autenticação e Papéis
 
-## License
+### Papéis (roles):
+- **GERENTE**
+  - Pode criar/atualizar/deletar funcionários
+  - Pode criar/deletar clientes
+  - Pode criar usuários (contas de acesso)
+- **FARMACÊUTICO**
+  - Pode criar/atualizar/deletar remédios
+  - Pode listar clientes/remédios
+- **ATENDENTE**
+  - Pode criar/atualizar clientes
+  - Pode listar clientes
+  - Não pode deletar clientes
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Fluxo:
+1. Criar o **seed-admin** (primeiro gerente)
+   - `POST /auth/seed-admin`
+   - Cria automaticamente o usuário `admin@saudemais.com / admin123`
+
+2. Fazer login
+   - `POST /auth/login`
+   - Retorna um `access_token` (JWT)
+
+3. Autorizar no Swagger
+   - Clique em **Authorize** → cole `Bearer <token>`
+
+4. Criar Funcionários
+   - `POST /funcionarios`
+   - Exemplo:
+   ```json
+   {
+     "nome": "Maria Souza",
+     "cpf": "12345678900",
+     "cargo": "ATENDENTE",
+     "salario": 2000,
+     "dataAdmissao": "2025-01-10",
+     "email": "maria.souza@saudemais.com"
+   }
+   ```
+
+5. Criar Usuários vinculados ao Funcionário
+   - `POST /auth/users`
+   - Exemplo:
+   ```json
+   {
+     "email": "maria.souza@saudemais.com",
+     "password": "123456",
+     "role": "ATENDENTE",
+     "funcionarioId": 3
+   }
+   ```
+
+6. Usar o login com esse novo usuário para acessar endpoints permitidos ao seu papel.
+
+---
+
+## 📊 Exemplos de Payloads
+
+### Criar Cliente
+```json
+{
+  "nome": "João Silva",
+  "cpf": "98765432100",
+  "telefone": "83988887777",
+  "email": "joao.silva@email.com",
+  "endereco": "Rua A, 123 - Centro"
+}
+```
+
+### Criar Remédio
+```json
+{
+  "nomeComercial": "Dipirona 1g",
+  "principioAtivo": "Dipirona",
+  "fabricante": "GenMed",
+  "preco": 12.5,
+  "receitaObrigatoria": false,
+  "estoque": 100
+}
+```
+
+---
+
+## ⚙️ Funcionalidades Especiais
+- **Paginação** com `?limit=&page=&search=`
+- **Validações automáticas** (`class-validator`)
+- **Guards** para controle de acesso por papéis
+- **Middleware de log** para requisições
+- **Filtros globais** para padronizar mensagens de erro
+- **Swagger** para documentação e testes interativos
+
+---
+
+## 👨‍💻 Autor
+Desenvolvido por mim, Ítalo Costa.
+Projeto didático para demonstrar uso do **NestJS** e boas práticas em APIs REST.
