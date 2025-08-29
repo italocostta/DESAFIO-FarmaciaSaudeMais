@@ -6,10 +6,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { User } from './user.entity';
+
+import { UsersService } from './users.service';
+
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { Funcionario } from '../funcionario/funcionario.entity/funcionario.entity';
+import { User } from './user.entity';
+import { UsersController } from './user.controller';
 
 @Module({
   imports: [
@@ -24,8 +28,8 @@ import { Funcionario } from '../funcionario/funcionario.entity/funcionario.entit
       }),
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  controllers: [AuthController, UsersController],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService],
+  exports: [AuthService, UsersService],
 })
 export class AuthModule {}

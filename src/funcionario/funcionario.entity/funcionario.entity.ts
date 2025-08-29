@@ -13,9 +13,6 @@ export class Funcionario {
   @Column({ length: 11 })
   cpf: string;
 
-  @Column({ length: 20 })
-  cargo: 'FARMACEUTICO' | 'ATENDENTE' | 'GERENTE';
-
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   salario: number;
 

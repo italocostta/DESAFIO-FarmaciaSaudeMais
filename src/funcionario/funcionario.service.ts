@@ -28,8 +28,8 @@ export class FuncionarioService {
 
   findAll(query: PaginateQuery): Promise<Paginated<Funcionario>> {
     return paginate(query, this.repo, {
-      sortableColumns: ['id', 'nome', 'cargo', 'salario', 'dataAdmissao'],
-      searchableColumns: ['nome', 'cpf', 'email', 'cargo'],
+      sortableColumns: ['id', 'nome', 'salario', 'dataAdmissao'],
+      searchableColumns: ['nome', 'cpf', 'email'],
       defaultSortBy: [['id', 'DESC']],
       filterableColumns: {
         cargo: [FilterOperator.EQ],

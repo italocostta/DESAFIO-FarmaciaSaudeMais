@@ -27,6 +27,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Role } from 'src/auth/user.entity';
 
 @ApiTags('Clientes')
 @ApiBearerAuth('JWT-auth')
@@ -71,7 +72,7 @@ export class ClienteController {
 
   // Exclusivo ATENDENTE
   @Patch(':id')
-  @Roles('ATENDENTE')
+  @Roles(Role.ATENDENTE, Role.GERENTE)
   @ApiOperation({ summary: 'Atualizar cliente (exclusivo do ATENDENTE)' })
   @ApiParam({ name: 'id', type: Number })
   update(@Param('id') id: string, @Body() dto: UpdateClienteDto) {

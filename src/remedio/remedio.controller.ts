@@ -26,6 +26,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Role } from 'src/auth/user.entity';
 
 @ApiTags('Remédios')
 @ApiBearerAuth('JWT-auth')
@@ -35,7 +36,7 @@ export class RemedioController {
   constructor(private readonly service: RemedioService) {}
 
   @Post()
-  @Roles('FARMACEUTICO')
+  @Roles(Role.FARMACEUTICO, Role.GERENTE)
   @ApiOperation({ summary: 'Criar remédio (exclusivo do FARMACÊUTICO)' })
   @ApiCreatedResponse({ description: 'Remédio criado com sucesso' })
   create(@Body() dto: CreateRemedioDto) {
@@ -66,7 +67,7 @@ export class RemedioController {
   }
 
   @Patch(':id')
-  @Roles('FARMACEUTICO')
+  @Roles(Role.FARMACEUTICO, Role.GERENTE)
   @ApiOperation({ summary: 'Atualizar remédio (exclusivo do FARMACÊUTICO)' })
   @ApiParam({ name: 'id', type: Number })
   update(@Param('id') id: string, @Body() dto: UpdateRemedioDto) {
@@ -74,7 +75,7 @@ export class RemedioController {
   }
 
   @Delete(':id')
-  @Roles('FARMACEUTICO')
+  @Roles(Role.FARMACEUTICO, Role.GERENTE)
   @ApiOperation({ summary: 'Deletar remédio (exclusivo do FARMACÊUTICO)' })
   @ApiParam({ name: 'id', type: Number })
   remove(@Param('id') id: string) {

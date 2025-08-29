@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsEmail,
-  IsEnum,
   IsNumber,
   IsString,
   Length,
@@ -25,10 +24,6 @@ export class CreateFuncionarioDto {
   @IsString()
   @Length(11, 11)
   cpf: string;
-
-  @ApiProperty({ enum: Cargo, enumName: 'Cargo' })
-  @IsEnum(Cargo)
-  cargo: Cargo;
 
   @ApiProperty({ example: 5800, minimum: 0 })
   @IsNumber()
